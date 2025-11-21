@@ -1,0 +1,345 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+:root {
+    --primary: #27ae60;
+    --secondary: #f39c12;
+    --danger: #e74c3c;
+    --dark: #2c3e50;
+    --light: #ecf0f1;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Fredoka One', cursive;
+    overflow: hidden;
+    touch-action: none;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    height: 100%;
+    background-color: #fdfaf1;
+    /* Default background styling */
+    background-image: 
+        linear-gradient(#e1e1e1 1px, transparent 1px),
+        linear-gradient(90deg, #e1e1e1 1px, transparent 1px);
+    background-size: 20px 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    overflow: hidden;
+    transition: background 0.5s ease;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 5;
+}
+
+#top-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    align-items: center;
+}
+
+#score-board {
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+    background: rgba(255,255,255,0.8);
+    padding: 5px 15px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#coin-display {
+    font-size: 24px;
+    color: #f1c40f;
+    font-weight: bold;
+    text-shadow: 1.5px 1.5px 0 #d35400;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.8);
+    padding: 5px 15px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* --- SCREENS --- */
+#start-screen, #game-over-screen, #market-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.97);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    pointer-events: auto;
+    z-index: 10;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    transition: opacity 0.3s;
+}
+
+#start-screen { justify-content: center; }
+#game-over-screen { justify-content: center; }
+#market-screen { padding-top: 10px; display: block; } /* Block for custom layout */
+
+/* Start Screen Specifics */
+.logo-container {
+    margin-bottom: 40px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+h1 {
+    font-size: 50px;
+    color: #e67e22;
+    margin: 0;
+    text-shadow: 4px 4px 0px #333;
+    -webkit-text-stroke: 1.5px #333;
+    line-height: 1;
+    transform: rotate(-3deg);
+}
+
+h1 span {
+    display: block;
+    font-size: 35px;
+    color: #f1c40f;
+    transform: rotate(3deg) translate(10px, -5px);
+}
+
+.menu-card {
+    background: white;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stats-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #7f8c8d;
+}
+.stat-value {
+    display: block;
+    font-size: 20px;
+    color: var(--dark);
+    font-weight: bold;
+}
+
+.btn {
+    padding: 15px;
+    font-size: 20px;
+    font-family: 'Fredoka One', cursive;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.1s;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn:active { transform: scale(0.96); }
+
+.btn-play {
+    background-color: var(--primary);
+    box-shadow: 0 6px 0 #1e8449;
+    font-size: 24px;
+    padding: 20px;
+}
+
+.btn-market {
+    background-color: var(--secondary);
+    box-shadow: 0 6px 0 #d35400;
+}
+
+/* Market Layout */
+.market-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.95);
+    padding: 10px 0;
+    z-index: 20;
+    border-bottom: 2px solid #eee;
+}
+
+.btn-close {
+    background: #e74c3c;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #c0392b;
+}
+.btn-close:active { transform: translateY(4px); box-shadow: none; }
+
+.market-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    background: #eee;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Fredoka One', cursive;
+    color: #7f8c8d;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 0 #1e8449;
+}
+
+.market-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+    padding-bottom: 40px;
+}
+
+/* Market Item Card */
+.item-card {
+    background: white;
+    border: 3px solid #eee;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.item-card.selected { border-color: var(--primary); background-color: #e8f8f5; }
+.item-card.locked { opacity: 0.7; filter: grayscale(0.8); }
+
+.item-preview {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    border: 2px solid rgba(0,0,0,0.05);
+}
+
+/* Arkaplan önizlemeleri için özel stil */
+.bg-preview {
+    width: 100%;
+    height: 60px;
+    background-size: cover;
+    background-position: center;
+}
+
+.item-name { font-size: 14px; color: #555; margin-bottom: 5px; }
+
+.item-btn {
+    width: 100%;
+    padding: 8px 0;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: auto;
+    color: white;
+}
+
+.btn-buy { background-color: var(--secondary); box-shadow: 0 3px 0 #d35400; }
+.btn-equip { background-color: var(--primary); box-shadow: 0 3px 0 #1e8449; }
+.btn-equipped { background-color: var(--dark); cursor: default; opacity: 0.8; }
+
+.btn-buy:active, .btn-equip:active { transform: translateY(3px); box-shadow: none; }
+
+/* Game Over & AI */
+#ai-comment {
+    font-size: 16px;
+    color: #333;
+    background-color: #fff3cd;
+    padding: 15px;
+    border-radius: 15px;
+    border: 2px dashed #e67e22;
+    margin: 20px 0;
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hidden { display: none !important; }
+
+.spinner {
+    border: 3px solid rgba(0,0,0,0.1);
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border-left-color: #e67e22;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 5px;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
